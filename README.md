@@ -1,330 +1,335 @@
-AI-Based Customer Churn Prediction & Retention Analytics Platform
+**AI-Based Customer Churn Prediction & Retention Analytics Platform**
+
+An end-to-end, production-ready machine learning platform that predicts customer churn, explains why customers are likely to leave, and recommends retention strategies using Explainable AI (SHAP), FastAPI, and an interactive analytics dashboard. Built using the IBM Telco Customer Churn Dataset and deployed with a modern full-stack architecture.
+
+**Overview**
+
+Customer churn is one of the biggest business challenges in the telecom industry. Retaining existing customers is significantly cheaper than acquiring new ones.
+
+**This project solves four critical business problems:**
+
+1.Which customers are likely to churn?
+
+2.Why are they likely to leave?
+
+3.Which factors drive churn overall?
+
+4.What actions should businesses take to retain them?
+
+**The platform combines:**
+
+Machine Learning, 
+Explainable AI (SHAP), 
+Real-Time Prediction APIs, 
+Interactive Analytics Dashboard, 
+Deployment using Docker + Cloud Hosting.
+
+**Problem Statement**
+
+Telecom companies lose a large number of customers every year due to poor engagement, pricing dissatisfaction, and lack of long-term commitment.
+
+Traditional churn analysis systems often fail because they:
+
+->Only provide predictions
+
+->Lack interpretability
+
+->Do not offer actionable insights
+
+->Are not deployable in real-world production environments
+
+This project addresses these gaps by building a complete AI-powered churn analytics platform.
+
+**Live Demo**
+
+Service	URL
+🖥️ Frontend Dashboard	Vercel Frontend Dashboard - https://churn-predictor-ml-project.vercel.app/
+
+⚡ Backend API	Render Backend API - https://churn-predictor-ml-project.onrender.com
+
+📄 Swagger API Docs	FastAPI Swagger Docs - https://churn-predictor-ml-project.onrender.com/docs
+
+⚠️ Free-tier backend hosting may take 20–30 seconds to wake up on the first request.
+
+**Key Features**
+
+**✅ Machine Learning Churn Prediction
+**
+Predicts churn probability in real time
+Classifies customers into:
+
+🟢 Low Risk
+
+🟡 Medium Risk
+
+🔴 High Risk
+
+**✅ Explainable AI with SHAP**
+
+1. Global feature importance analysis
+
+2. Customer-level churn explanations
+
+3. Top contributing churn factors returned with every prediction
+
+**✅ Interactive Dashboard**
+
+1. Customer input form
+
+2. Risk visualization
+
+3. SHAP explanation charts
+
+4. Retention recommendations
+
+5. Prediction history tracking
+
+**✅ Production-Ready Backend**
+
+1. FastAPI REST API
+
+2. Pydantic validation
+
+3. Modular architecture
+
+4. Swagger/OpenAPI documentation
+
+**✅ Deployment & DevOps**
+
+1. Dockerized backend/frontend
+
+2. Cloud deployment using Render & Vercel
+
+3. GitHub version control
+
+**System Workflow**
+
+<img width="1536" height="1024" alt="ChatGPT Image May 26, 2026, 04_59_48 PM" src="https://github.com/user-attachments/assets/ee377a6d-a4ba-4c1f-a9ef-6866da156f74" />
 
 
-An end-to-end, industry-level machine learning platform that predicts customer churn, explains why customers leave, and recommends personalized retention actions — all through a real-time REST API and interactive dashboard.
+**Dataset Information**
 
-
-📌 Table of Contents
-
-Project Overview
-Live Demo
-Key Features
-Business Insights
-Project Architecture
-Tech Stack
-Folder Structure
-ML Model Performance
-API Reference
-Installation & Setup
-Docker Deployment
-Screenshots
-Resume Bullet Points
-
-
-📖 Project Overview
-Customer churn — when customers stop doing business with a company — is one of the most costly problems in any subscription-based business. Acquiring a new customer costs 5x more than retaining an existing one.
-This platform solves the problem end-to-end:
-StageWhat it doesPredictIdentifies which customers are likely to churnExplainUses SHAP to show exactly WHY a customer is at riskRecommendSuggests personalized retention actionsVisualizeDisplays business insights through an interactive dashboard
-Built on the IBM Telco Customer Churn Dataset — an industry-standard dataset used by data scientists worldwide.
-
-🌐 Live Demo
-ServiceURL🖥️ Frontend Dashboardhttps://your-app.vercel.app⚡ Backend APIhttps://your-api.onrender.com📚 API Documentationhttps://your-api.onrender.com/docs
-
-⚠️ Free tier backend may take 30 seconds to wake up on first request.
-
-
-✨ Key Features
-🤖 Machine Learning
-
-Trains and compares 3 ML models: Logistic Regression, Random Forest, XGBoost
-Evaluates across 5 metrics: Accuracy, Precision, Recall, F1-Score, ROC-AUC
-Automatically selects and saves the best performing model
-
-🔍 Explainable AI (XAI)
-
-SHAP (SHapley Additive exPlanations) integration
-Global feature importance — which factors drive churn overall
-Per-customer explanations — exactly why THIS customer is at risk
-Business-readable insights from model decisions
-
-⚡ Real-Time Prediction API
-
-FastAPI REST API with automatic Swagger documentation
-Returns churn probability, risk level, and top contributing factors
-Sub-second response time
-CORS enabled for frontend integration
-
-📊 Interactive Dashboard
-
-Built with Next.js + Tailwind CSS + Recharts
-Customer risk assessment with color-coded badges (Green/Yellow/Red)
-SHAP feature importance visualization
-AI-generated personalized retention recommendations
-Prediction history tracking
-
-🐳 Production Ready
-
-Fully Dockerized with docker-compose
-Deployed on Render (backend) and Vercel (frontend)
-Environment-based configuration
-CORS middleware for cross-origin requests
-
-
-📊 Business Insights
-Discovered from SHAP analysis on the IBM Telco dataset:
-🔴 HIGH CHURN RISK FACTORS:
-  • Month-to-month contracts → 3x higher churn rate than annual contracts
-  • New customers with high charges → charges_per_tenure is #1 predictor
-  • Fiber optic internet users → possible service quality dissatisfaction
-  • Electronic check payment method → correlated with higher churn
-  • No online security or tech support → customers feel unsupported
-
-🟢 RETENTION FACTORS:
-  • Two-year contract holders → most loyal customer segment
-  • Customers with high total charges → long-term loyal customers
-  • Tech support subscribers → feel supported, stay longer
-  • Online security subscribers → higher engagement, lower churn
-Recommended Retention Actions by Risk Level:
-Risk LevelProbabilityAction🟢 Low< 30%Standard engagement, monitor monthly🟡 Medium30–60%Personalized email, loyalty reward offer🔴 High> 60%Immediate outreach, contract upgrade discount, account manager
-
-🏗️ Project Architecture
-[IBM Telco Dataset]
-        ↓
-[Data Preprocessing Pipeline]
-  • Handle missing values
-  • Encode categorical features
-  • Feature engineering (charges_per_tenure, is_high_value, is_long_term)
-        ↓
-[ML Training Engine]
-  • Logistic Regression
-  • Random Forest
-  • XGBoost  ← Best Model
-        ↓
-[Model Evaluation]
-  • Accuracy, Precision, Recall, F1, ROC-AUC
-  • ROC Curve Comparison
-  • Best model auto-selected and saved
-        ↓
-[Explainable AI — SHAP]
-  • Global feature importance
-  • Per-customer SHAP force plots
-        ↓
-[FastAPI Prediction API]
-  POST /api/v1/predict
-  → churn_probability
-  → risk_level
-  → top_reasons (SHAP)
-        ↓
-[Next.js Dashboard]
-  • Customer input form
-  • Risk visualization
-  • Retention recommendations
-        ↓
-[Docker + Render + Vercel]
-  • Fully deployed and publicly accessible
-
-🛠️ Tech Stack
-Machine Learning
-ToolPurposePandas + NumPyData processingScikit-learnLogistic Regression, Random Forest, preprocessingXGBoostGradient boosted trees (best model)SHAPExplainable AIMatplotlib + SeabornEDA visualizationsJoblibModel serialization
-Backend
-ToolPurposeFastAPIREST API frameworkUvicornASGI serverPydanticRequest/response validationPython 3.10+Runtime
-Frontend
-ToolPurposeNext.js 14React frameworkTailwind CSSStylingRechartsCharts and visualizationsAxiosAPI calls
-DevOps
-ToolPurposeDocker + Docker ComposeContainerizationRenderBackend deploymentVercelFrontend deploymentGit + GitHubVersion control
-
-📁 Folder Structure
-customer-churn-ai/
-│
-├── backend/
-│   ├── app/
-│   │   └── schemas.py          # Pydantic input/output models
-│   ├── routes/
-│   │   └── prediction.py       # API route handlers
-│   ├── services/
-│   │   └── predictor.py        # Core prediction + SHAP logic
-│   └── main.py                 # FastAPI app entry point
-│
-├── frontend/
-│   ├── app/
-│   │   └── page.js             # Main dashboard UI
-│   ├── Dockerfile
-│   └── .env.local
-│
-├── ml/
-│   ├── notebooks/
-│   │   ├── 01_eda.ipynb                  # Exploratory Data Analysis
-│   │   ├── 02_model_evaluation.ipynb     # Model comparison + ROC curves
-│   │   └── 03_shap_explainability.ipynb  # SHAP analysis
-│   ├── training/
-│   │   └── train_models.py     # Train all 3 models
-│   ├── saved_models/           # Trained .pkl files
-│   │   ├── XGBoost.pkl
-│   │   ├── Random_Forest.pkl
-│   │   ├── Logistic_Regression.pkl
-│   │   ├── best_model.pkl
-│   │   ├── scaler.pkl
-│   │   └── feature_names.pkl
-│   └── preprocessing/
-│       └── preprocess.py       # Data cleaning pipeline
-│
-├── data/
-│   └── telco_churn.csv         # IBM Telco Dataset (not in git)
-│
-├── docker/
-│   └── Dockerfile.backend
-│
-├── docker-compose.yml
-├── requirements.txt
-└── README.md
-
-📈 ML Model Performance
-Trained and evaluated on the IBM Telco Customer Churn Dataset (7,043 customers, 80/20 split):
-ModelAccuracyPrecisionRecallF1-ScoreROC-AUCLogistic Regression80.55%66.89%52.94%59.10%84.59%Random Forest79.06%63.57%49.47%55.64%82.30%XGBoost77.93%59.52%52.67%55.89%81.88%
-
-✅ Best Model selected by ROC-AUC: Logistic Regression (84.59%)
-XGBoost used for SHAP explainability due to TreeExplainer compatibility.
-
-Top SHAP Features (Most Important Predictors):
-1. charges_per_tenure          → Monthly cost relative to tenure
-2. Contract_Two year           → Long-term contract commitment
-3. TotalCharges                → Overall customer value
-4. MonthlyCharges              → Current billing amount
-5. InternetService_Fiber optic → Service type
-
-🔌 API Reference
-Base URL
-https://your-api.onrender.com/api/v1
-POST /predict
-Predicts churn probability for a single customer.
-Request Body:
-json{
-  "tenure": 12,
-  "MonthlyCharges": 80.0,
-  "TotalCharges": 960.0,
-  "Contract": "Month-to-month",
-  "InternetService": "Fiber optic",
-  "PaymentMethod": "Electronic check",
-  "SeniorCitizen": 0,
-  "gender": "Male",
-  "Partner": "No",
-  "Dependents": "No",
-  "PhoneService": "Yes",
-  "PaperlessBilling": "Yes"
-}
-Response:
-json{
-  "churn_probability": 0.4833,
-  "risk_level": "Medium",
-  "top_reasons": [
-    {"feature": "charges_per_tenure", "importance": 1.5283},
-    {"feature": "InternetService_Fiber optic", "importance": 0.6227},
-    {"feature": "Contract_Two year", "importance": 0.2730},
-    {"feature": "OnlineSecurity_Yes", "importance": 0.1997},
-    {"feature": "MultipleLines_Yes", "importance": 0.1564}
-  ]
-}
-Risk Levels:
-LevelProbabilityColorLow< 30%🟢 GreenMedium30–60%🟡 YellowHigh> 60%🔴 Red
-GET /
-Health check endpoint.
-json{"status": "running", "message": "Churn Prediction API is live"}
-
-🚀 Installation & Setup
-Prerequisites
-
-Python 3.10+
-Node.js 20+
-Git
-
-1. Clone the Repository
-bashgit clone https://github.com/KRISHNA-K19/Churn-Predictor-ML-project-.git
-cd Churn-Predictor-ML-project-
-2. Setup Python Virtual Environment
-bashpython -m venv venv
-
-# Windows
-.\venv\Scripts\activate
-
-# Mac/Linux
-source venv/bin/activate
-3. Install Python Dependencies
-bashpip install -r requirements.txt
-4. Download Dataset
-
-Download from: https://www.kaggle.com/datasets/blastchar/telco-customer-churn
-Place telco_churn.csv inside the data/ folder
-
-5. Train the Models
-bashcd ml/training
-python train_models.py
-6. Start the Backend API
-bashcd backend
-uvicorn main:app --reload --port 8000
-API running at: http://localhost:8000
-Swagger docs at: http://localhost:8000/docs
-7. Start the Frontend
-bashcd frontend
-npm install
-npm run dev
-Dashboard running at: http://localhost:3000
-
-🐳 Docker Deployment
-Run the entire stack with one command:
-bashdocker-compose up --build
-Services:
-
-Backend: http://localhost:8000
-Frontend: http://localhost:3000
-
-
-📸 Screenshots
-Dashboard — Customer Prediction
-
-Interactive form with real-time churn risk assessment
-
-SHAP Feature Importance
-
-Top factors driving churn for each individual customer
-
-Model Comparison
-
-ROC curves and metrics across all 3 models
-
-
-💼 Resume Bullet Points
-- Developed an end-to-end AI-powered Customer Churn Prediction platform using
-  XGBoost, Random Forest, and Logistic Regression on the IBM Telco dataset,
-  achieving 84.59% ROC-AUC with explainable predictions via SHAP analysis.
-
-- Built a real-time prediction REST API with FastAPI returning churn probability,
-  risk segmentation (Low/Medium/High), and top contributing SHAP factors
-  per customer with sub-second response time.
-
-- Delivered a Next.js analytics dashboard visualizing churn risk, SHAP feature
-  importance, and AI-generated retention recommendations, deployed via Docker
-  on Render and Vercel with full CI/CD from GitHub.
-
-📚 Dataset
 IBM Telco Customer Churn Dataset
 
-Source: Kaggle
-Records: 7,043 customers
-Features: 21 columns
-Target: Churn (Yes/No) — 26.5% positive class
+Total Customers - 7,043
+
+Features - 21
+
+Churn Rate - 26.5%
+
+Source - Kaggle
+
+**⚙️ Data Processing Pipeline**
+
+Data Cleaning
+Fixed TotalCharges datatype issues
+
+Handled missing values using median imputation
+
+**Feature Engineering**
+
+Created custom business-driven features:
+
+Feature	Description:
+
+	charges_per_tenure - MonthlyCharges / (tenure + 1)
+	is_high_value - Customers paying above ₹70/month
+	is_long_term - Customers with tenure > 24 months
+
+**Encoding & Scaling**
+
+One-Hot Encoding for categorical variables
+
+StandardScaler for feature normalization
+
+**🤖 Machine Learning Models**
 
 
-🤝 Contributing
-Pull requests are welcome. For major changes, please open an issue first.
+Three machine learning models were trained and evaluated.
 
-📄 License
-This project is licensed under the MIT License.
 
-👤 Author
+	Logistic Regression	80.55%(Accuracy) 			66.89%(precision) 	 	52.94%(recall)  	 59.10%(F1-score) 		84.59%(ROC-AUC)
+
+	Random Forest	79.06%(Accuracy)			63.57%(precision)			49.47%(recall)			55.64%(F1-score)			82.30%(ROC-AUC)
+
+	XGBoost	77.93%(Accuracy)	59.52%(precision)			52.67%(recall)			55.89%(F1-score)			81.88%(ROC-AUC)
+
+🏆 Best Performing Model
+
+
+Logistic Regression achieved the highest ROC-AUC score and was selected as the primary prediction model.
+
+**🔍 Explainable AI (SHAP)
+**
+
+This project integrates SHAP (SHapley Additive exPlanations) to make predictions interpretable.
+
+**Global Explanations**
+
+Understand which features affect churn across the entire customer base.
+
+**Local Explanations
+**
+
+Explain why a specific customer is predicted to churn.
+
+**Visualizations**
+
+<img width="1200" height="600" alt="Model_Comparison" src="https://github.com/user-attachments/assets/2172a6d4-1bd0-4a73-be1a-b5b53d9b0742" />
+
+**⚡ FastAPI Prediction API**
+
+Endpoint
+
+POST /api/v1/predict
+
+📥 Sample Request
+
+	{
+	  "tenure": 2,
+	  "MonthlyCharges": 85.0,
+	  "TotalCharges": 170.0,
+	  "Contract": "Month-to-month",
+	  "InternetService": "Fiber optic",
+	  "PaymentMethod": "Electronic check",
+	  "SeniorCitizen": 0
+	}
+
+📤 Sample Response
+
+		{
+		  "churn_probability": 0.4833,
+		  "risk_level": "Medium",
+		  "top_reasons": [
+		
+	    {
+	      "feature": "charges_per_tenure",
+	      "importance": 1.5283
+	    },
+	    {
+	      "feature": "InternetService_Fiber optic",
+	      "importance": 0.6227
+	    },
+	    {
+	      "feature": "Contract_Two year",
+	      "importance": 0.2730
+	    }
+	  ]
+	}
+
+**🚦 Risk Classification**
+
+Risk Level	Probability Range
+
+🟢 Low	0% – 30%
+
+🟡 Medium	30% – 60%
+
+🔴 High	60% – 100%
+
+**📈 Business Insights from SHAP Analysis**
+
+🔴 Factors Increasing Churn Risk
+
+High charges_per_tenure - Customers feel pricing is too high early in the relationship
+
+Month-to-month contracts - No long-term commitment
+
+Fiber optic internet - Possible dissatisfaction or pricing concerns
+
+Electronic check payment - Lower customer engagement
+
+No online security - Less investment in services
+
+**🟢 Factors Reducing Churn Risk**
+
+Two-year contracts - Higher loyalty
+
+Long tenure - Strong customer trust
+
+Tech support subscription - Better service experience
+
+Online security add-on - Higher engagement
+
+High TotalCharges - Long-term high-value customers rarely churn
+
+**💡 Retention Recommendations**
+
+🔴 High Risk - Personal call + discount/upgrade offer
+
+🟡 Medium Risk - Personalized email + free add-on
+
+🟢 Low Risk - Loyalty rewards + engagement campaigns
+
+**📊 Dashboard Features**
+
+Customer input form
+
+Churn probability visualization
+
+Risk badge indicators
+
+SHAP explanation chart
+
+Retention recommendations
+
+Prediction history
+
+**Frontend Tech Stack**
+
+<img width="1919" height="1079" alt="Screenshot 2026-05-26 160904" src="https://github.com/user-attachments/assets/aab40c2c-cfeb-4198-aa46-08eab8e4331d" />
+
+
+Next.js 14
+
+Tailwind CSS
+
+Recharts
+
+**🛠️ Tech Stack**
+
+Data Processing - Python, Pandas, NumPy
+
+Machine Learning - Scikit-learn, XGBoost
+
+Explainability - SHAP
+
+Visualization - Matplotlib, Seaborn, Plotly
+
+Backend API - FastAPI, Uvicorn, Pydantic
+
+Frontend - Next.js 14, Tailwind CSS
+
+Deployment - Docker, Render, Vercel
+
+Version Control - Git, GitHub
+
+**Future Improvements**
+
+User authentication system
+
+Real-time streaming predictions
+
+Customer segmentation module
+
+Automated email retention campaigns
+
+Drift detection & model monitoring
+
+CI/CD pipeline integration
+
+Kubernetes deployment
+
+**Author**
+
 Krishnamoorthy K
 
-GitHub: @KRISHNA-K19
+If you found this project useful:
 
+Give the repository a star
 
+Fork the project
 
-⭐ If this project helped you, please give it a star on GitHub!
+Share feedback
+
+Contribute improvements.
