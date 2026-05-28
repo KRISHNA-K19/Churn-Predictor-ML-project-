@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import axios from 'axios';
 import {
@@ -47,13 +47,22 @@ const FormField = ({ label, name, type = 'text', formData, handleChange }) => {
         {description && <span className="text-xs text-gray-500 italic">({description})</span>}
       </div>
       {options ? (
-        <select name={name} value={formData[name]} onChange={handleChange}
-          className="w-full mt-1 bg-gray-700 text-white rounded-lg px-4 py-2.5 border border-gray-600 hover:border-blue-500 focus:outline-none focus:border-blue-400 transition-all">
+        <select
+          name={name}
+          value={formData[name]}
+          onChange={handleChange}
+          className="w-full mt-1 bg-gray-700 text-white rounded-lg px-4 py-2.5 border border-gray-600 hover:border-blue-500 focus:outline-none focus:border-blue-400 transition-all"
+        >
           {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
         </select>
       ) : (
-        <input type={type} name={name} value={formData[name]} onChange={handleChange}
-          className="w-full mt-1 bg-gray-700 text-white rounded-lg px-4 py-2.5 border border-gray-600 hover:border-blue-500 focus:outline-none focus:border-blue-400 transition-all" />
+        <input
+          type={type}
+          name={name}
+          value={formData[name]}
+          onChange={handleChange}
+          className="w-full mt-1 bg-gray-700 text-white rounded-lg px-4 py-2.5 border border-gray-600 hover:border-blue-500 focus:outline-none focus:border-blue-400 transition-all"
+        />
       )}
     </div>
   );
@@ -78,29 +87,35 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('single');
 
-  useEffect(() => { fetchHistory(); }, []);
-
-  const fetchHistory = async () => {
+  const fetchHistory = useCallback(async () => {
     setLoadingHistory(true);
     try {
-      const { data, error } = await supabase
+      const { data, error: fetchError } = await supabase
         .from('predictions')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(50);
-      if (error) {
-        console.error('Supabase fetch error:', error);
+      if (fetchError) {
+        console.error('Supabase fetch error:', fetchError);
       } else {
         setPredictions(data || []);
       }
     } catch (err) {
       console.error('Failed to load history:', err);
+    } finally {
+      setLoadingHistory(false);
     }
-    setLoadingHistory(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    const loadHistory = async () => {
+      await fetchHistory();
+    };
+    loadHistory();
+  }, [fetchHistory]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handlePredict = async () => {
@@ -119,13 +134,11 @@ export default function Home() {
 
       console.log('Sending payload:', payload);
 
-      // Call FastAPI
       const res = await axios.post(`${API_URL}/predict`, payload);
       const result = res.data;
       console.log('Prediction result:', result);
       setPrediction(result);
 
-      // Save to Supabase
       const { data, error: dbError } = await supabase
         .from('predictions')
         .insert([{
@@ -152,8 +165,9 @@ export default function Home() {
     } catch (err) {
       console.error('Prediction error:', err);
       setError('Prediction failed. Is the backend running?');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const resetForm = () => {
@@ -193,22 +207,25 @@ export default function Home() {
         {/* Tabs */}
         <div className="flex gap-4 mb-8 border-b border-gray-800">
           {['single', 'history'].map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab)}
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 font-semibold border-b-2 transition-all ${
                 activeTab === tab
                   ? 'border-blue-400 text-blue-400'
                   : 'border-transparent text-gray-400 hover:text-gray-300'
-              }`}>
+              }`}
+            >
               {tab === 'single' ? 'Single Prediction' : `Prediction History (${predictions.length})`}
             </button>
           ))}
         </div>
 
-        {/* Single Prediction */}
+        {/* Single Prediction Tab */}
         {activeTab === 'single' && (
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
 
-            {/* Form */}
+            {/* Input Form */}
             <div className="lg:col-span-2 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700 shadow-2xl">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                 <span className="text-blue-400">📋</span> Customer Details
@@ -222,14 +239,19 @@ export default function Home() {
               <FormField label="Senior Citizen" name="SeniorCitizen" formData={formData} handleChange={handleChange} />
 
               <div className="flex gap-3 mt-6">
-                <button onClick={handlePredict} disabled={loading}
-                  className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 disabled:from-gray-600 disabled:to-gray-600 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 disabled:scale-100 shadow-lg">
+                <button
+                  onClick={handlePredict}
+                  disabled={loading}
+                  className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 disabled:from-gray-600 disabled:to-gray-600 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 disabled:scale-100 shadow-lg"
+                >
                   {loading
                     ? <span className="flex items-center justify-center gap-2"><span className="animate-spin">⏳</span> Analyzing...</span>
                     : '🔮 Predict Churn Risk'}
                 </button>
-                <button onClick={resetForm}
-                  className="px-6 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 rounded-xl transition-all">
+                <button
+                  onClick={resetForm}
+                  className="px-6 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 rounded-xl transition-all"
+                >
                   ↺ Reset
                 </button>
               </div>
@@ -242,7 +264,7 @@ export default function Home() {
               )}
             </div>
 
-            {/* Result */}
+            {/* Prediction Result */}
             <div className="lg:col-span-3 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700 shadow-2xl">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                 <span className="text-purple-400">📊</span> Prediction Result
@@ -257,16 +279,18 @@ export default function Home() {
                 </div>
               ) : (
                 <>
-                  <div className="text-center p-8 rounded-2xl mb-6 border-2"
+                  {/* Risk Badge */}
+                  <div
+                    className="text-center p-8 rounded-2xl mb-6 border-2"
                     style={{
                       backgroundColor: RISK_COLORS[prediction.risk_level] + '15',
                       borderColor: RISK_COLORS[prediction.risk_level],
-                    }}>
+                    }}
+                  >
                     <p className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
                       Churn Risk Assessment
                     </p>
-                    <p className="text-6xl font-black my-4"
-                      style={{ color: RISK_COLORS[prediction.risk_level] }}>
+                    <p className="text-6xl font-black my-4" style={{ color: RISK_COLORS[prediction.risk_level] }}>
                       {prediction.risk_level}
                     </p>
                     <p className="text-3xl font-bold text-gray-300">
@@ -274,14 +298,17 @@ export default function Home() {
                     </p>
                     <p className="text-sm text-gray-400 mt-1">probability of churning</p>
                     <div className="mt-4 bg-gray-700 rounded-full h-2 overflow-hidden">
-                      <div className="h-full transition-all duration-500"
+                      <div
+                        className="h-full transition-all duration-500"
                         style={{
                           width: `${prediction.churn_probability * 100}%`,
                           backgroundColor: RISK_COLORS[prediction.risk_level],
-                        }} />
+                        }}
+                      />
                     </div>
                   </div>
 
+                  {/* SHAP Chart */}
                   {prediction.top_reasons?.length > 0 && (
                     <>
                       <h3 className="font-bold text-lg text-gray-300 mb-4">📈 Top Contributing Factors</h3>
@@ -290,11 +317,19 @@ export default function Home() {
                           <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                           <XAxis dataKey="feature" tick={{ fill: '#9ca3af', fontSize: 10 }} angle={-30} height={70} />
                           <YAxis tick={{ fill: '#9ca3af' }} />
-                          <Tooltip contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #4b5563', borderRadius: '8px', color: '#fff' }} />
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor: '#1f2937',
+                              border: '1px solid #4b5563',
+                              borderRadius: '8px',
+                              color: '#fff',
+                            }}
+                          />
                           <Bar dataKey="importance" fill="#3b82f6" radius={[6, 6, 0, 0]} />
                         </BarChart>
                       </ResponsiveContainer>
 
+                      {/* Retention Strategy */}
                       <div className="mt-6 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-xl p-5 border border-yellow-500/30">
                         <h4 className="font-semibold text-yellow-400 mb-3">💡 Recommended Retention Strategy</h4>
                         <p className="text-gray-200 text-sm leading-relaxed">
@@ -319,8 +354,10 @@ export default function Home() {
           <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700 shadow-2xl">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold">Prediction History</h2>
-              <button onClick={fetchHistory}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-all">
+              <button
+                onClick={fetchHistory}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-all"
+              >
                 🔄 Refresh
               </button>
             </div>
@@ -336,8 +373,10 @@ export default function Home() {
             ) : (
               <div className="space-y-3">
                 {predictions.map((pred, idx) => (
-                  <div key={pred.id}
-                    className="bg-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-600 transition-all">
+                  <div
+                    key={pred.id}
+                    className="bg-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-600 transition-all"
+                  >
                     <div>
                       <p className="text-sm text-gray-400">
                         #{predictions.length - idx} · {new Date(pred.created_at).toLocaleString()}
